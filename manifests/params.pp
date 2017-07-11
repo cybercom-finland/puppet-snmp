@@ -463,6 +463,11 @@ class snmp::params {
       $trap_service_name        = 'snmptrapd'
     }
     'Debian': {
+      $_snmp_ug = if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
+        'Debian-snmp'
+      } else {
+        'snmp'
+      }
       $package_name             = 'snmpd'
       $service_config           = '/etc/snmp/snmpd.conf'
       $service_config_perms     = '0600'
@@ -472,8 +477,8 @@ class snmp::params {
       $sysconfig                = '/etc/default/snmpd'
       $var_net_snmp             = '/var/lib/snmp'
       $varnetsnmp_perms         = '0755'
-      $varnetsnmp_owner         = 'snmp'
-      $varnetsnmp_group         = 'snmp'
+      $varnetsnmp_owner         = $_snmp_ug
+      $varnetsnmp_group         = $_snmp_ug
 
       $client_package_name      = 'snmp'
       $client_config            = '/etc/snmp/snmp.conf'
